@@ -77,18 +77,40 @@ export default function CallToAction() {
           }}
         >
           <div
-            className="absolute inset-0 bg-[rgb(74,32,138)] bg-blend-overlay [mask-image:radial-gradient(50%_50%_at_50%_35%,black,transparent)] group-hover:opacity-0 transition duration-700"
+            className="absolute inset-0 bg-[rgb(30,64,175)] bg-blend-overlay [mask-image:radial-gradient(50%_50%_at_50%_35%,black,transparent)] group-hover:opacity-0 transition duration-700"
             style={{
               backgroundImage: `url(${gridLines.src})`,
             }}
           ></div>
           <motion.div
-            className="absolute inset-0 bg-[rgb(74,32,138)] bg-blend-overlay opacity-0 group-hover:opacity-100 transition duration-700"
+            className="absolute inset-0 bg-[rgb(30,64,175)] bg-blend-overlay opacity-0 group-hover:opacity-100 transition duration-700"
             style={{
               maskImage: imageMask,
               backgroundImage: `url(${gridLines.src})`,
             }}
           ></motion.div>
+          <div className="relative">
+            <h2 className="text-5xl md:text-6xl max-w-sm mx-auto tracking-tighter text-center font-medium">
+              AI-driven SEO for everyone.
+            </h2>
+            <p className="text-center text-lg md:text-xl max-w-sm mx-auto text-white/70 px-4 mt-5 tracking-tight">
+              Achieve clear, impactful results without the complexity.
+            </p>
+            <div className="flex justify-center mt-8">
+              <Button>Join waitlist</Button>
+            </div>
+          </div>
+          <div className="relative">
+            <h2 className="text-5xl md:text-6xl max-w-sm mx-auto tracking-tighter text-center font-medium">
+              AI-driven SEO for everyone.
+            </h2>
+            <p className="text-center text-lg md:text-xl max-w-sm mx-auto text-white/70 px-4 mt-5 tracking-tight">
+              Achieve clear, impactful results without the complexity.
+            </p>
+            <div className="flex justify-center mt-8">
+              <Button>Join waitlist</Button>
+            </div>
+          </div>
           <div className="relative">
             <h2 className="text-5xl md:text-6xl max-w-sm mx-auto tracking-tighter text-center font-medium">
               AI-driven SEO for everyone.

@@ -58,13 +58,13 @@ export default function Testimonials() {
             {[...testimonials, ...testimonials].map((testimonial, idx) => (
               <div
                 key={testimonial.name + idx}
-                className="border border-white/15 p-6 md:p-10 rounded-xl bg-[linear-gradient(to_bottom_left,rgb(140,69,255,.3),black)] max-w-xs md:max-w-md flex-none"
+                className="border border-white/15 p-6 md:p-10 rounded-xl bg-[linear-gradient(to_bottom_left,rgb(59,130,246,.3),black)] max-w-xs md:max-w-md flex-none"
               >
                 <div className="text-lg tracking-tight md:text-2xl">
                   "{testimonial.text}"
                 </div>
                 <div className="flex items-center gap-3 mt-5">
-                  <div className="relative after:content-[''] after:absolute after:inset-0 after:bg-[rgb(140,69,244)] after:mix-blend-soft-light">
+                  <div className="relative after:content-[''] after:absolute after:inset-0 after:bg-[rgb(59,130,246)] after:mix-blend-soft-light">
                     <Image
                       src={testimonial.avatarImg}
                       alt={`Avatar for ${testimonial.name}`}
