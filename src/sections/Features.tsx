@@ -10,12 +10,13 @@ import {
   useMotionTemplate,
   useMotionValue,
   ValueAnimationTransition,
+  useInView,
 } from "framer-motion";
 
 const tabs = [
   {
     icon: "/assets/lottie/vroom.lottie",
-    title: "User-friendly dashboard",
+    title: "User friendly dashboard",
     isNew: false,
     backgroundPositionX: 0,
     backgroundPositionY: 0,
@@ -23,7 +24,7 @@ const tabs = [
   },
   {
     icon: "/assets/lottie/click.lottie",
-    title: "One-click optimization",
+    title: "One click optimization",
     isNew: false,
     backgroundPositionX: 98,
     backgroundPositionY: 100,
@@ -114,7 +115,7 @@ const ChatInterface = () => {
       }, 1500);
     } else {
       // Redirect to another website in a new tab when chat ends
-      window.open("https://example.com", "_blank");
+      window.open("https://cal.com/sourcesmart/30min", "_blank");
     }
   };
 
@@ -288,35 +289,90 @@ const ChatInterface = () => {
                 ? "Yes, prioritize suppliers with AISC certification..."
                 : "Ask SourceSmart AI anything..."
             }
-            className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-white/50 focus:outline-none focus:border-blue-400/50 focus:bg-white/15 transition-all text-sm"
+            className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-white focus:outline-none focus:border-blue-400/50 focus:bg-white/15 transition-all text-sm"
             disabled={isTyping}
           />
-          <button
-            onClick={handleSendMessage}
-            disabled={isTyping}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white rounded-lg px-4 py-2 transition-all duration-200 flex items-center justify-center min-w-[40px]"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          <div className="relative">
+            <button
+              onClick={handleSendMessage}
+              disabled={isTyping}
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white rounded-lg px-4 py-2 transition-all duration-200 flex items-center justify-center min-w-[40px]"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-              />
-            </svg>
-          </button>
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                />
+              </svg>
+            </button>
+            {currentStep === 0 && (
+              <motion.div
+                className="absolute bottom-full right-0 mb-2 whitespace-nowrap"
+                initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                  scale: 1,
+                }}
+                transition={{
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 20,
+                  delay: 0.5,
+                }}
+              >
+                {/* Chat bubble */}
+                <motion.div
+                  className="relative bg-white/20 backdrop-blur-6xl border border-white/20 rounded-2xl px-3 py-2 text-xs text-white shadow-lg"
+                  animate={{
+                    y: [0, -3, 0],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                >
+                  <div className="flex items-center gap-2">
+                    <motion.div
+                      className="w-1.5 h-1.5 bg-blue-400 rounded-full"
+                      animate={{
+                        scale: [1, 1.2, 1],
+                        opacity: [0.6, 1, 0.6],
+                      }}
+                      transition={{
+                        duration: 1.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                    />
+                    <span className="font-medium">Click me</span>
+                  </div>
+
+                  {/* Chat bubble tail */}
+                  <div className="absolute top-full right-3 w-0 h-0 border-l-[6px] border-r-[6px] border-t-[8px] border-l-transparent border-r-transparent border-t-white/10"></div>
+                </motion.div>
+              </motion.div>
+            )}
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-const featureTab = (tab: (typeof tabs)[number]) => {
+const featureTab = (
+  tab: (typeof tabs)[number],
+  index: number,
+  isInView: boolean
+) => {
   const tabRef = useRef<HTMLDivElement>(null);
   const dotLottieRef = useRef<DotLottieCommonPlayer>(null);
 
@@ -326,7 +382,7 @@ const featureTab = (tab: (typeof tabs)[number]) => {
   const maskImage = useMotionTemplate`radial-gradient(80px 80px at ${xPercentage}% ${yPercentage}%, black, transparent)`;
 
   useEffect(() => {
-    if (!tabRef.current) return;
+    if (!tabRef.current || !isInView) return;
     const { height, width } = tabRef.current?.getBoundingClientRect();
     const circumference = height * 2 + width * 2;
 
@@ -347,7 +403,7 @@ const featureTab = (tab: (typeof tabs)[number]) => {
 
     animate(xPercentage, [0, 100, 100, 0, 0], options);
     animate(yPercentage, [0, 0, 100, 100, 0], options);
-  }, []);
+  }, [isInView]);
 
   const handleTabHover = () => {
     if (dotLottieRef.current === null) return;
@@ -356,16 +412,27 @@ const featureTab = (tab: (typeof tabs)[number]) => {
   };
 
   return (
-    <div
+    <motion.div
       ref={tabRef}
       onMouseEnter={handleTabHover}
       className="border border-white/15 flex p-2.5 rounded-xl gap-2.5 items-center lg:flex-1 lg:text-xl relative"
+      initial={{ opacity: 0, y: 30, scale: 0.95 }}
+      animate={
+        isInView
+          ? { opacity: 1, y: 0, scale: 1 }
+          : { opacity: 0, y: 30, scale: 0.95 }
+      }
+      transition={{
+        duration: 0.6,
+        delay: 0.8 + index * 0.15,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      }}
     >
       <motion.div
         style={{
           maskImage: maskImage,
         }}
-        className="absolute inset-0 -m-px rounded-xl border border-[#A369FF] [mask-image:]"
+        className="absolute inset-0 -m-px rounded-xl border border-[#0284c7] [mask-image:]"
       ></motion.div>
       <div className="h-12 w-12 border border-white/15 rounded-lg inline-flex items-center justify-center">
         <DotLottiePlayer
@@ -377,35 +444,98 @@ const featureTab = (tab: (typeof tabs)[number]) => {
       </div>
       <div className="font-medium">{tab.title}</div>
       {tab.isNew && (
-        <div className="text-xs rounded-full px-2 py-0.5 bg-[#8C44ff] text-black font-semibold">
+        <div className="text-xs rounded-full px-2 py-0.5 bg-[#0284c7] text-black font-semibold">
           new
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 
 export default function Features() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, {
+    once: true,
+    margin: "-100px 0px -100px 0px",
+    amount: 0.3,
+  });
+
   return (
-    <section className="py-20 md:py-24">
+    <section className="py-20 md:py-24" ref={ref}>
       <div className="container mx-auto px-5 lg:px-20">
-        <h2 className="text-5xl md:text-6xl font-medium text-center tracking-tighter">
-          Elevate your SEO efforts.
-        </h2>
-        <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto tracking-tight text-center mt-5">
-          From small startups to large enterprises, our AI-driven tool has
-          revolutionized the way businesses approach SEO.
-        </p>
-        <div className="mt-10 flex flex-col lg:flex-row gap-3">
-          {tabs.map((tab) => (
-            <React.Fragment key={tab.title}>{featureTab(tab)}</React.Fragment>
+        {/* Main heading with staggered animation */}
+        <motion.h2
+          className="text-5xl md:text-6xl font-medium text-center tracking-tighter"
+          initial={{ opacity: 0, y: 50 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+          transition={{
+            duration: 0.8,
+            delay: 0.1,
+            ease: [0.25, 0.46, 0.45, 0.94],
+          }}
+        >
+          Procurement on Autopilot
+        </motion.h2>
+
+        {/* Subtitle with slight delay */}
+        <motion.p
+          className="text-white/80 text-lg md:text-2xl max-w-2xl mx-auto tracking-tight text-center mt-5"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{
+            duration: 0.7,
+            delay: 0.3,
+            ease: [0.25, 0.46, 0.45, 0.94],
+          }}
+        >
+          SourceSmart AI drives Sourcing. You drive strategy.
+        </motion.p>
+
+        {/* Feature tabs with staggered entrance */}
+        <motion.div
+          className="mt-10 flex flex-col lg:flex-row gap-3"
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+          transition={{
+            duration: 0.6,
+            delay: 0.5,
+            ease: [0.25, 0.46, 0.45, 0.94],
+          }}
+        >
+          {tabs.map((tab, index) => (
+            <React.Fragment key={tab.title}>
+              {featureTab(tab, index, isInView)}
+            </React.Fragment>
           ))}
-        </div>
-        <div className="border border-white/20 p-2.5 rounded-xl mt-3">
-          <div className="aspect-video border border-white/20 rounded-lg overflow-hidden">
+        </motion.div>
+
+        {/* Chat interface container with final entrance */}
+        <motion.div
+          className="border border-white/20 p-2.5 rounded-xl mt-3"
+          initial={{ opacity: 0, y: 50, scale: 0.95 }}
+          animate={
+            isInView
+              ? { opacity: 1, y: 0, scale: 1 }
+              : { opacity: 0, y: 50, scale: 0.95 }
+          }
+          transition={{
+            duration: 0.8,
+            delay: 1.3,
+            ease: [0.25, 0.46, 0.45, 0.94],
+          }}
+        >
+          <motion.div
+            className="aspect-video border border-white/20 rounded-lg overflow-hidden"
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{
+              duration: 0.6,
+              delay: 1.5,
+            }}
+          >
             <ChatInterface />
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

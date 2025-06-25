@@ -10,6 +10,7 @@ import {
   useMotionTemplate,
   useMotionValue,
   ValueAnimationTransition,
+  useInView,
 } from "framer-motion";
 
 const steps = [
@@ -67,9 +68,11 @@ const steps = [
 const StepCard = ({
   step,
   index,
+  isInView,
 }: {
   step: (typeof steps)[number];
   index: number;
+  isInView: boolean;
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -106,9 +109,17 @@ const StepCard = ({
   return (
     <motion.div
       ref={cardRef}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
+      initial={{ opacity: 0, y: 30, scale: 0.95 }}
+      animate={{
+        opacity: isInView ? 1 : 0,
+        y: isInView ? 0 : 30,
+        scale: isInView ? 1 : 0.95,
+      }}
+      transition={{
+        delay: isInView ? index * 0.15 + 0.5 : 0,
+        duration: 0.8,
+        ease: [0.25, 0.1, 0.25, 1],
+      }}
       className={`
         relative border rounded-xl p-4 backdrop-blur-sm transition-all duration-300
         ${
@@ -180,11 +191,26 @@ const StepCard = ({
   );
 };
 
-const ProgressBar = ({ currentStep }: { currentStep: number }) => {
+const ProgressBar = ({
+  currentStep,
+  isInView,
+}: {
+  currentStep: number;
+  isInView: boolean;
+}) => {
   const progressPercentage = (currentStep / 7) * 100;
 
   return (
-    <div className="mb-6">
+    <motion.div
+      className="mb-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
+      transition={{
+        delay: isInView ? 0.6 : 0,
+        duration: 0.8,
+        ease: [0.25, 0.1, 0.25, 1],
+      }}
+    >
       <div className="flex justify-between items-center mb-2">
         <span className="text-sm font-medium text-white">
           Step {currentStep}
@@ -194,14 +220,18 @@ const ProgressBar = ({ currentStep }: { currentStep: number }) => {
       <div className="w-full bg-white/10 rounded-full h-2">
         <motion.div
           initial={{ width: 0 }}
-          animate={{ width: `${progressPercentage}%` }}
-          transition={{ duration: 0.5 }}
+          animate={{ width: isInView ? `${progressPercentage}%` : 0 }}
+          transition={{
+            duration: 1.2,
+            delay: isInView ? 0.8 : 0,
+            ease: [0.25, 0.1, 0.25, 1],
+          }}
           className="bg-gradient-to-r from-blue-500 to-blue-400 h-2 rounded-full relative"
         >
           <div className="absolute right-0 top-0 w-2 h-2 bg-white rounded-full shadow-lg" />
         </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -213,6 +243,9 @@ export default function DashboardPreview() {
       status: index === 0 ? "active" : "pending",
     }))
   );
+
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   // Auto-progress through steps
   useEffect(() => {
@@ -243,20 +276,56 @@ export default function DashboardPreview() {
   }, []);
 
   return (
-    <section className="py-20 md:py-24">
+    <section ref={sectionRef} className="py-20 md:py-24">
       <div className="container mx-auto px-5 lg:px-20">
-        <h2 className="text-5xl md:text-6xl font-medium text-center tracking-tighter">
+        <motion.h2
+          className="text-5xl md:text-6xl font-medium text-center tracking-tighter"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 30 }}
+          transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+        >
           Watch AI Work Its Magic
-        </h2>
-        <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto tracking-tight text-center mt-5">
+        </motion.h2>
+        <motion.p
+          className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto tracking-tight text-center mt-5"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
+          transition={{
+            delay: isInView ? 0.2 : 0,
+            duration: 0.8,
+            ease: [0.25, 0.1, 0.25, 1],
+          }}
+        >
           See how our intelligent procurement assistant handles complex sourcing
           tasks automatically, from requirement analysis to final supplier
           selection.
-        </p>
+        </motion.p>
 
-        <div className="mt-10 border border-white/20 p-6 rounded-xl ">
+        <motion.div
+          className="mt-10 border border-white/20 p-6 rounded-xl"
+          initial={{ opacity: 0, y: 40, scale: 0.98 }}
+          animate={{
+            opacity: isInView ? 1 : 0,
+            y: isInView ? 0 : 40,
+            scale: isInView ? 1 : 0.98,
+          }}
+          transition={{
+            delay: isInView ? 0.3 : 0,
+            duration: 1,
+            ease: [0.25, 0.1, 0.25, 1],
+          }}
+        >
           {/* Dashboard Header */}
-          <div className="mb-8">
+          <motion.div
+            className="mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
+            transition={{
+              delay: isInView ? 0.4 : 0,
+              duration: 0.8,
+              ease: [0.25, 0.1, 0.25, 1],
+            }}
+          >
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-xl font-semibold text-white">
                 Procurement Dashboard
@@ -268,11 +337,20 @@ export default function DashboardPreview() {
                 </span>
               </div>
             </div>
-            <ProgressBar currentStep={currentStep} />
-          </div>
+            <ProgressBar currentStep={currentStep} isInView={isInView} />
+          </motion.div>
 
           {/* Main Status */}
-          <div className="mb-8 p-4 rounded-lg bg-blue-500/10 border border-blue-400/30">
+          <motion.div
+            className="mb-8 p-4 rounded-lg bg-blue-500/10 border border-blue-400/30"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
+            transition={{
+              delay: isInView ? 0.5 : 0,
+              duration: 0.8,
+              ease: [0.25, 0.1, 0.25, 1],
+            }}
+          >
             <div className="flex items-center gap-3 mb-2">
               <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
                 <span className="text-white text-sm font-bold">AI</span>
@@ -284,44 +362,91 @@ export default function DashboardPreview() {
                 </h4>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Steps Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {stepStatuses.slice(0, 6).map((step, index) => (
-              <StepCard key={step.id} step={step} index={index} />
+              <StepCard
+                key={step.id}
+                step={step}
+                index={index}
+                isInView={isInView}
+              />
             ))}
           </div>
 
           {/* Final Step - Full Width */}
           <div className="mt-4">
-            <StepCard step={stepStatuses[6]} index={6} />
+            <StepCard step={stepStatuses[6]} index={6} isInView={isInView} />
           </div>
 
           {/* Dashboard Stats */}
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 rounded-lg text-center bg-white/5 border border-white/10">
-              <div className="text-2xl font-bold text-blue-400 mb-1">
-                $50,000
-              </div>
-              <div className="text-sm text-white/70">Labor Costs Saved</div>
-            </div>
-            <div className="p-4 rounded-lg text-center bg-white/5 border border-white/10">
-              <div className="text-2xl font-bold text-green-500 mb-1">18%</div>
-              <div className="text-sm text-white/70">Cost Reduction</div>
-            </div>
-            <div className="p-4 rounded-lg text-center bg-white/5 border border-white/10">
-              <div className="text-2xl font-bold text-blue-400 mb-1">500</div>
-              <div className="text-sm text-white/70">New Suppliers Found</div>
-            </div>
-          </div>
+          <motion.div
+            className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 30 }}
+            transition={{
+              delay: isInView ? 1.2 : 0,
+              duration: 0.8,
+              ease: [0.25, 0.1, 0.25, 1],
+            }}
+          >
+            {[
+              {
+                value: "$50,000",
+                label: "Labor Costs Saved",
+                color: "text-blue-400",
+              },
+              {
+                value: "18%",
+                label: "Cost Reduction",
+                color: "text-green-500",
+              },
+              {
+                value: "500",
+                label: "New Suppliers Found",
+                color: "text-blue-400",
+              },
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                className="p-4 rounded-lg text-center bg-white/5 border border-white/10"
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                animate={{
+                  opacity: isInView ? 1 : 0,
+                  y: isInView ? 0 : 20,
+                  scale: isInView ? 1 : 0.95,
+                }}
+                transition={{
+                  delay: isInView ? 1.3 + index * 0.1 : 0,
+                  duration: 0.6,
+                  ease: [0.25, 0.1, 0.25, 1],
+                }}
+              >
+                <div className={`text-2xl font-bold ${stat.color} mb-1`}>
+                  {stat.value}
+                </div>
+                <div className="text-sm text-white/70">{stat.label}</div>
+              </motion.div>
+            ))}
+          </motion.div>
 
           {/* Results Notice */}
-          <div className="mt-6 flex items-center justify-center gap-2 text-sm text-blue-400">
+          <motion.div
+            className="mt-6 flex items-center justify-center gap-2 text-sm text-blue-400"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
+            transition={{
+              delay: isInView ? 1.6 : 0,
+              duration: 0.8,
+              ease: [0.25, 0.1, 0.25, 1],
+            }}
+          >
             <div className="w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />
             <span>Results typically seen within first 30 days</span>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

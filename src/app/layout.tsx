@@ -6,8 +6,14 @@ import { twMerge } from "tailwind-merge";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "AI Startup Landing Page",
-  description: "AI Startup Landing Page",
+  title: "SourceSmart - Smart Solution for Modern Business",
+  description: "SourceSmart - Smart Solution for Modern Businesses",
+  openGraph: {
+    images: ["/logo.png"],
+  },
+  icons: {
+    icon: ["/logo.png"],
+  },
 };
 
 export default function RootLayout({

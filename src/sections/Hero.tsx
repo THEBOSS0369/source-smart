@@ -74,7 +74,7 @@ export default function Hero() {
           <div className="absolute top-[-40%] left-1/2 -translate-x-1/2 z-10">
             <a
               href="#"
-              className="border py-2 px-4 rounded-full border-blue-400/50 bg-blue-500/20 backdrop-blur-sm inline-flex gap-3 text-xl font-bold shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] transition-all duration-300"
+              className="border py-2 px-4 rounded-full border-blue-400/50 bg-blue-400/10 backdrop-blur-3xl inline-flex gap-3 text-xl font-bold shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] transition-all duration-300"
             >
               <span className="bg-[linear-gradient(to_right,#ffffff,#e0f2fe,#bfdbfe)] text-transparent bg-clip-text [-webkit-background-clip:text] font-semibold">
                 World's Smartest Sourcing Platform
@@ -83,7 +83,7 @@ export default function Hero() {
           </div>
 
           <h1
-            className="text-8xl md:text-[64px] md:leading-none mx-auto pb-2 mt-16 font-semibold tracking-tighter bg-white bg-[radial-gradient(100%_100%_at_top_left,white,white,rgb(30,64,175,.5))] 
+            className="text-4xl md:text-[64px] md:leading-none mx-auto pb-2 mt-16 font-semibold tracking-tighter bg-white bg-[radial-gradient(100%_100%_at_top_left,white,white,rgb(30,64,175,.5))] 
  bg-clip-text text-transparent text-center"
           >
             Stop Overspending on

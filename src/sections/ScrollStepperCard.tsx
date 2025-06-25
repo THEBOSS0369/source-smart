@@ -8,6 +8,11 @@ import {
   useMotionValue,
   useMotionTemplate,
 } from "framer-motion";
+import {
+  IoGlobeOutline,
+  IoChatbubblesOutline,
+  IoBarChartOutline,
+} from "react-icons/io5";
 
 const Button = (props: React.PropsWithChildren) => {
   return (
@@ -49,7 +54,7 @@ const features = [
     title: "InstaSource Crawler",
     description:
       "Discover top suppliers worldwide using our intelligent sourcing engine that analyzes millions of data points in real-time.",
-    icon: "🌐",
+    icon: IoGlobeOutline,
     badge: "FEATURE 1",
   },
   {
@@ -57,7 +62,7 @@ const features = [
     title: "SmartQuote Engine",
     description:
       "Streamline quote reviews, fast-track negotiations, and seal deals with ease using AI-powered comparison tools.",
-    icon: "💬",
+    icon: IoChatbubblesOutline,
     badge: "FEATURE 2",
   },
   {
@@ -65,7 +70,7 @@ const features = [
     title: "ForecastPro Suite",
     description:
       "Use intelligent forecasts to stay ahead of demand and streamline your inventory with predictive analytics.",
-    icon: "📊",
+    icon: IoBarChartOutline,
     badge: "FEATURE 3",
   },
 ];
@@ -85,6 +90,7 @@ const FeatureCard = ({
   );
 
   const maskImage = useMotionTemplate`radial-gradient(50% 50% at ${mouseX}px ${mouseY}px, black, transparent)`;
+  const Icon = feature.icon;
 
   return (
     <div ref={cardRef} className="flex-shrink-0 w-80 lg:w-96">
@@ -153,7 +159,7 @@ const FeatureCard = ({
               transition={{ delay: 0.4 + index * 0.1 }}
               className="inline-block mb-4 relative z-10"
             >
-              <span className="text-xs rounded-full px-2 py-0.5 bg-[#3b82f6] text-white font-semibold">
+              <span className="text-xs rounded-full px-3 py-1 border border-white/20 backdrop-blur-3xl  text-white font-semibold">
                 {feature.badge}
               </span>
             </motion.div>
@@ -169,10 +175,10 @@ const FeatureCard = ({
                 duration: 0.8,
                 delay: 0.6 + index * 0.1,
               }}
-              className="mb-6 relative z-10"
+              className="mb-6 py-2 relative z-10"
             >
               <div className="w-12 h-12 border border-white/15 rounded-lg inline-flex items-center justify-center relative overflow-hidden">
-                <span className="text-2xl relative z-10">{feature.icon}</span>
+                <Icon className="text-2xl relative z-10" />
                 <div className="absolute inset-0 bg-gradient-to-br from-[#3b82f6]/20 to-transparent" />
               </div>
             </motion.div>
@@ -182,23 +188,42 @@ const FeatureCard = ({
               initial={{ opacity: 0, y: 20 }}
               animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ delay: 0.8 + index * 0.1 }}
-              className="space-y-4 flex flex-col h-full relative z-10"
+              className="space-y-4 flex flex-col h-full relative z-20"
             >
-              <h3 className="text-xl font-medium text-white tracking-tight">
+              <h3 className="text-3xl font-semibold text-white tracking-tight">
                 {feature.title}
               </h3>
 
-              <p className="text-white/70 leading-relaxed text-sm flex-grow">
+              <p className="text-white/70 leading-relaxed font-semibold text-base flex-grow">
                 {feature.description}
               </p>
 
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="pt-2"
+              {/* <motion.a
+                href="#"
+                className="inline-flex items-center text-white font-medium hover:text-blue-300 transition-colors group mt-auto"
+                whileHover={{ x: 5 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 25,
+                }}
               >
-                <Button>Explore feature</Button>
-              </motion.div>
+                Read more
+                <svg
+                  className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M9 5l7 7-7 7"
+                  ></path>
+                </svg>
+              </motion.a> */}
             </motion.div>
           </div>
         </motion.div>
@@ -209,6 +234,14 @@ const FeatureCard = ({
 
 export default function HorizontalCardStepper() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Main component visibility detection
+  const isInView = useInView(containerRef, {
+    once: true,
+    margin: "-10% 0px -10% 0px",
+  });
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
@@ -229,67 +262,137 @@ export default function HorizontalCardStepper() {
   }, [visibleStep]);
 
   return (
-    <div className="pt-[240px]">
-      <div className="relative h-full w-full bg-black">
+    <motion.div
+      ref={containerRef}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: isInView ? 1 : 0 }}
+      transition={{
+        duration: 1.2,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      }}
+      className="pt-[240px] relative md:py-36 overflow-hiddenpy-20"
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{
+          opacity: isInView ? 1 : 0,
+          scale: isInView ? 1 : 0.95,
+        }}
+        transition={{
+          duration: 1.5,
+          delay: 0.2,
+          ease: [0.25, 0.46, 0.45, 0.94],
+        }}
+        className="relative h-full w-full bg-black"
+      >
         <div className="absolute bottom-0 left-0 right-16 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
-        {/* <div className="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#fbfbfb36,#000)]"></div> */}
-        <div className="absolute left-1/2 top-[-10%] h-[1000px] w-[1000px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#fbfbfb36,#000)]   "></div>
-      </div>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{
+            opacity: isInView ? 1 : 0,
+            scale: isInView ? 1 : 0.8,
+          }}
+          transition={{
+            duration: 2,
+            delay: 0.4,
+            ease: [0.25, 0.46, 0.45, 0.94],
+          }}
+          className="absolute left-1/2 top-[-25%] h-[700px] w-[700px] md:top-[-10%] md:h-[1000px] md:w-[1000px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.7)_0%,rgba(59,130,246,0.6)_25%,rgba(30,64,175,0.8)_50%,rgba(15,23,42,0.9)_75%,rgba(0,0,0,1)_100%)]
+shadow-[0_0_60px_rgba(59,130,246,0.3),inset_0_0_60px_rgba(255,255,255,0.05),0_0_120px_rgba(59,130,246,0.15)]"
+        ></motion.div>
+      </motion.div>
 
       <section
         ref={sectionRef}
-        className="py-20 md:py-24 relative  text-white overflow-hidden"
+        className="py-20 md:py-24 relative text-white overflow-hidden"
       >
         <div className="container mx-auto px-5 lg:px-20">
           {/* Header */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{
+              opacity: isInView ? 1 : 0,
+              y: isInView ? 0 : 50,
+            }}
+            transition={{
+              duration: 1,
+              delay: 0.6,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
             className="text-center max-w-4xl mx-auto mb-16"
           >
-            <h2 className="text-5xl md:text-6xl font-medium tracking-tighter mb-5">
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              animate={{
+                opacity: isInView ? 1 : 0,
+                y: isInView ? 0 : 30,
+              }}
+              transition={{
+                duration: 1,
+                delay: 0.8,
+                ease: [0.25, 0.46, 0.45, 0.94],
+              }}
+              className="text-5xl md:text-6xl font-medium tracking-tighter mb-5"
+            >
               We Offer Nothing Short of the Best
-            </h2>
-            <p className="text-white/70 text-lg md:text-xl tracking-tight">
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{
+                opacity: isInView ? 1 : 0,
+                y: isInView ? 0 : 20,
+              }}
+              transition={{
+                duration: 1,
+                delay: 1,
+                ease: [0.25, 0.46, 0.45, 0.94],
+              }}
+              className="text-white/70 text-lg md:text-xl tracking-tight"
+            >
               Discover our premium features designed to transform your business
               operations with cutting-edge AI technology.
-            </p>
+            </motion.p>
           </motion.div>
 
           {/* Horizontal scrolling cards container */}
-          <div className="relative">
-            {/* Progress indicator */}
-            <div className="mb-8 flex justify-center">
-              <div className="w-32 h-1 bg-white/10 rounded-full overflow-hidden">
-                <motion.div
-                  className="h-full bg-gradient-to-r from-[#1e40af] to-[#3b82f6] rounded-full"
-                  style={{ width: `${(scrollStep / features.length) * 100}%` }}
-                  transition={{ duration: 0.1 }}
-                />
-              </div>
-            </div>
-
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{
+              opacity: isInView ? 1 : 0,
+              y: isInView ? 0 : 40,
+            }}
+            transition={{
+              duration: 1,
+              delay: 1.2,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
+            className="relative"
+          >
             {/* Cards container */}
-            <div className="flex gap-8 pb-8 overflow-x-auto scrollbar-hide">
+            <div className="flex justify-center gap-8 pb-8 overflow-x-auto scrollbar-hide">
               {features.map((feature, index) => (
                 <FeatureCard
                   key={feature.id}
                   feature={feature}
                   index={index}
-                  visible={index < scrollStep}
+                  visible={index < scrollStep && isInView}
                 />
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* CTA Section */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            animate={{
+              opacity: isInView ? 1 : 0,
+              y: isInView ? 0 : 30,
+            }}
+            transition={{
+              duration: 0.8,
+              delay: 1.6,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
             className="text-center mt-20"
           >
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -325,11 +428,12 @@ export default function HorizontalCardStepper() {
             -ms-overflow-style: none;
             scrollbar-width: none;
           }
+
           .scrollbar-hide::-webkit-scrollbar {
             display: none;
           }
         `}</style>
       </section>
-    </div>
+    </motion.div>
   );
 }

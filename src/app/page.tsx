@@ -7,6 +7,10 @@ import Footer from "@/sections/Footer";
 import DashboardPreview from "@/sections/Dashboard";
 import ProcurementStepper from "@/sections/ProcurementStepper";
 import ScrollStepperCards from "@/sections/ScrollStepperCard";
+import { AnimatedBeamDemo } from "@/components/ui/demo";
+import TechStack from "@/sections/Tech_Stack";
+import ValueCards from "@/sections/ValueCards";
+import { FAQs } from "@/sections/FAQs";
 
 export default function Home() {
   return (
@@ -18,7 +22,10 @@ export default function Home() {
       <Features />
       <ProcurementStepper />
       <ScrollStepperCards />
+      <TechStack />
+      <ValueCards />
       <Testimonials />
+      <FAQs />
       <Footer />
     </div>
   );
