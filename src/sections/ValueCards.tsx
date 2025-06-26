@@ -108,7 +108,9 @@ export default function ValueCards() {
                     <div
                       className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${card.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
                     >
-                      <Icon className="w-8 h-8 text-white" />
+                      <span className="w-8 h-8 text-white flex items-center justify-center">
+                        <Icon />
+                      </span>
                     </div>
 
                     {/* Content */}
@@ -131,7 +133,9 @@ export default function ValueCards() {
                       }}
                     >
                       Learn more
-                      <IoArrowForwardOutline className="w-4 h-4 ml-2 group-hover/link:translate-x-1 transition-transform" />
+                      <span style={{ marginLeft: '0.5rem' }}>
+                        <IoArrowForwardOutline size="1rem" />
+                      </span>
                     </motion.button>
                   </div>
                 </div>

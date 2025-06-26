@@ -178,7 +178,7 @@ const FeatureCard = ({
               className="mb-6 py-2 relative z-10"
             >
               <div className="w-12 h-12 border border-white/15 rounded-lg inline-flex items-center justify-center relative overflow-hidden">
-                <Icon className="text-2xl relative z-10" />
+                <Icon size={24} />
                 <div className="absolute inset-0 bg-gradient-to-br from-[#3b82f6]/20 to-transparent" />
               </div>
             </motion.div>
@@ -197,33 +197,6 @@ const FeatureCard = ({
               <p className="text-white/70 leading-relaxed font-semibold text-base flex-grow">
                 {feature.description}
               </p>
-
-              {/* <motion.a
-                href="#"
-                className="inline-flex items-center text-white font-medium hover:text-blue-300 transition-colors group mt-auto"
-                whileHover={{ x: 5 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 400,
-                  damping: 25,
-                }}
-              >
-                Read more
-                <svg
-                  className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M9 5l7 7-7 7"
-                  ></path>
-                </svg>
-              </motion.a> */}
             </motion.div>
           </div>
         </motion.div>
@@ -270,7 +243,7 @@ export default function HorizontalCardStepper() {
         duration: 1.2,
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
-      className="pt-[240px] relative md:py-36 overflow-hiddenpy-20"
+      className="pt-[240px] relative md:py-36 overflow-hidden py-20"
     >
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
@@ -283,7 +256,7 @@ export default function HorizontalCardStepper() {
           delay: 0.2,
           ease: [0.25, 0.46, 0.45, 0.94],
         }}
-        className="relative h-full w-full bg-black"
+        className="relative h-full w-full bg-black overflow-hidden"
       >
         <div className="absolute bottom-0 left-0 right-16 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
         <motion.div
@@ -297,8 +270,15 @@ export default function HorizontalCardStepper() {
             delay: 0.4,
             ease: [0.25, 0.46, 0.45, 0.94],
           }}
-          className="absolute left-1/2 top-[-25%] h-[700px] w-[700px] md:top-[-10%] md:h-[1000px] md:w-[1000px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.7)_0%,rgba(59,130,246,0.6)_25%,rgba(30,64,175,0.8)_50%,rgba(15,23,42,0.9)_75%,rgba(0,0,0,1)_100%)]
-shadow-[0_0_60px_rgba(59,130,246,0.3),inset_0_0_60px_rgba(255,255,255,0.05),0_0_120px_rgba(59,130,246,0.15)]"
+          className="absolute left-1/2 
+                     top-[-25%] md:top-[-10%]
+                     h-[400px] w-[400px] 
+                     sm:h-[500px] sm:w-[500px] 
+                     md:h-[700px] md:w-[700px] 
+                     lg:h-[1000px] lg:w-[1000px] 
+                     -translate-x-1/2 rounded-full 
+                     bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.7)_0%,rgba(59,130,246,0.6)_25%,rgba(30,64,175,0.8)_50%,rgba(15,23,42,0.9)_75%,rgba(0,0,0,1)_100%)]
+                     shadow-[0_0_60px_rgba(59,130,246,0.3),inset_0_0_60px_rgba(255,255,255,0.05),0_0_120px_rgba(59,130,246,0.15)]"
         ></motion.div>
       </motion.div>
 
